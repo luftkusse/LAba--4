@@ -1,0 +1,47 @@
+version: "2.4"
+
+
+    bot_front:
+        environment:
+            BOT_TOKEN: "1985406226:AAHp7MB7fzbuJBCfZxOXqoyaeBmONG_9KyU"
+            WEBHOOK_URL: "https://33ce-37-215-55-53.ngrok.io"
+            URL_WEB: "https://24f0-37-215-55-53.ngrok.io"
+        image: lexa/front
+        restart: always
+        networks:
+            - farmnetwork
+        ports:
+            - "5001:5001"
+
+    bot_back:
+        environment:
+            URL_WEB: "https://360c-178-127-183-172.eu.ngrok.io"
+        image: lexa/back
+        restart: always
+        networks:
+            - farmnetwork
+        depends_on:
+            - rest_db
+        ports:
+            - "5000:5000"
+services:
+    rest_db:
+        image: postgres
+        restart: always
+        environment:
+            POSTGRES_DB: rest_db
+            POSTGRES_USER: lexa
+            POSTGRES_PASSWORD: 143123
+        networks:
+            - farmnetwork
+        volumes:
+            - "pgdata:/var/lib/postgresql/data"
+
+volumes:
+     pgdata:
+     
+     
+networks:
+    farmnetwork:
+        name: farmnetwork
+
